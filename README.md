@@ -26,11 +26,15 @@ Asset paths are relative and routes use the hash (`#/writing/my-post`), so the s
 | To change                                   | Edit                                                    |
 |---------------------------------------------|---------------------------------------------------------|
 | Name, intro, bio, experience, links         | `content/site.ts`                                       |
+| "Recent" highlights on the home page        | `recent` in `content/site.ts`                           |
+| Diagrams and charts in the posts            | `scripts/make-figures.mjs`, then `node scripts/make-figures.mjs` |
 | Resume PDF                                  | `public/islam-torky-resume.pdf`                         |
 | Photo                                       | `content/media/avatar.jpg`                              |
 | Papers and projects                         | `content/research/*.md` (copy `_template.md` to add one) |
 | Posts                                       | `content/writing/*.md` (copy `_template.md` to add one)  |
 | Hide an entry                               | `hidden: true` in its front matter                      |
+
+In a post, `![alt](./media/fig.svg "Caption")` on its own line becomes a figure (local SVGs are inlined so they use the site's fonts), and a ` ```stats ` block with one `value | label` per line becomes a row of big numbers.
 
 ## How it's made
 

@@ -25,6 +25,13 @@ export interface TalkItem {
   hidden?: boolean;
 }
 
+export interface RecentItem {
+  value: string; // the big number or word, e.g. "SoTA"
+  label: string; // what it is, e.g. "Terminal-Bench 2.0 & 2.1"
+  text: string; // one or two sentences; supports **bold**, *italic* and [links](…)
+  url?: string; // makes the whole item a link
+}
+
 export interface ChapterCopy {
   number: string; // "01"
   label: string; // navigation label, e.g. "About"
@@ -58,6 +65,8 @@ export interface SiteConfig {
     experience: TimelineItem[];
     education: TimelineItem[];
     talks: TalkItem[];
+    /** Shown first, on the opening scene: the latest results worth knowing about. Empty list = hidden. */
+    recent: RecentItem[];
     /** Empty strings are hidden automatically. */
     /** resume: a file in public/, shown as a Resume button in the main nav and next to the other links. */
     links: { github: string; scholar: string; linkedin: string; email: string; resume: string; extra: LinkItem[] };

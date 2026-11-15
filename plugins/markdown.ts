@@ -9,6 +9,9 @@
  *   highlighting library ships to the browser.
  * - A paragraph that contains only an image becomes <figure> + <figcaption>
  *   (the caption is the image "title":  ![alt](./media/fig.svg "Caption")).
+ *   A local .svg in such a paragraph is inlined, so its text uses the site's fonts;
+ *   the alt text becomes its accessible label.
+ * - A ```stats fence becomes a row of big numbers, one "value | label" per line.
  * - Relative image paths are imported through Vite, so they are fingerprinted
  *   for GitHub Pages and inlined in the single-file build.
  */
@@ -53,6 +56,7 @@ export function markdown(): Plugin {
       }
 
       const images: string[] = [];
+      const svgs: string[] = [];
       const toc: { id: string; text: string; depth: number }[] = [];
       const usedIds = new Set<string>();
       const imgToken = (href: string) => {
@@ -69,6 +73,10 @@ export function markdown(): Plugin {
             if (only && only.length === 1 && only[0].type === 'image') {
               const img = only[0] as Tokens.Image;
               const cap = img.title ? `<figcaption>${esc(img.title)}</figcaption>` : '';
+              if (/\.svg$/i.test(img.href) && !/^(https?:|data:|\/\/)/.test(img.href)) {
+                svgs.push(img.href.startsWith('.') ? img.href : `./${img.href}`);
+                return `<figure class="viz"><div class="viz-frame" role="img" aria-label="${esc(img.text)}">%%SVG${svgs.length - 1}%%</div>${cap}</figure>\n`;
+              }
               return `<figure><img src="${imgToken(img.href)}" alt="${esc(img.text)}" loading="lazy" decoding="async">${cap}</figure>\n`;
             }
             return `<p>${this.parser.parseInline(token.tokens)}</p>\n`;
@@ -92,6 +100,13 @@ export function markdown(): Plugin {
           },
           code(token: Tokens.Code) {
             const lang = (token.lang || '').trim().split(/\s+/)[0];
+            if (lang === 'stats') {
+              const items = token.text.split('\n').filter((l) => l.trim()).map((l) => {
+                const [v, ...rest] = l.split('|');
+                return `<div class="stat"><span class="stat-v">${esc(v.trim())}</span><span class="stat-l">${esc(rest.join('|').trim())}</span></div>`;
+              });
+              return `<div class="stats">${items.join('')}</div>\n`;
+            }
             let html: string;
             if (lang && hljs.getLanguage(lang)) html = hljs.highlight(token.text, { language: lang, ignoreIllegals: true }).value;
             else html = esc(token.text);
@@ -112,8 +127,13 @@ export function markdown(): Plugin {
       const words = body.replace(/```[\s\S]*?```/g, ' ').split(/\s+/).filter(Boolean).length;
       const file = id.split('/').pop()!.replace(/\.md$/, '');
 
-      const imports = images.map((p, i) => `import __img${i} from ${JSON.stringify(p)};`).join('\n');
-      const fill = images.map((_, i) => `.split("%%IMG${i}%%").join(__img${i})`).join('');
+      const imports = [
+        ...images.map((p, i) => `import __img${i} from ${JSON.stringify(p)};`),
+        ...svgs.map((p, i) => `import __svg${i} from ${JSON.stringify(p + '?raw')};`),
+      ].join('\n');
+      const svgFill = (i: number) =>
+        `__svg${i}.replace(/^[\\s\\S]*?<svg\\b/, "<svg").replace(/\\s(role|aria-label)="[^"]*"/g, "").replace(/^<svg/, '<svg aria-hidden="true" focusable="false"')`;
+      const fill = images.map((_, i) => `.split("%%IMG${i}%%").join(__img${i})`).join('') + svgs.map((_, i) => `.split("%%SVG${i}%%").join(${svgFill(i)})`).join('');
       const code = `${imports}
 const html = ${JSON.stringify(html)}${fill};
 export default {

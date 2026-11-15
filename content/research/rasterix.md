@@ -18,6 +18,8 @@ It reads PDFs plus nine office formats: CSV, DOCX, XLSX, PPTX, ODT, ODS, ODP, RT
 
 I measured it on [olmOCR-bench](https://huggingface.co/datasets/allenai/olmOCR-bench), 7,019 assertions over 1,403 real PDFs, scored with allenai’s own test code rather than mine. rasterix comes first of the six text extractors I compared:
 
+![Bar chart of the share of reachable olmOCR-bench assertions passed: rasterix 61.0%, pymupdf4llm 53.8%, anydoc 42.1%, pymupdf 33.9%, pypdf 32.2%, pdfplumber 23.8%.](../writing/media/fig-rasterix-olmocr.svg)
+
 | Engine | Assertions passed | Share of reachable |
 |---|---:|---:|
 | **rasterix** | **1,939** | **61.0%** |
@@ -41,4 +43,8 @@ rasterix is meant to run in a container with one vCPU and 1 GB of memory, on wha
 
 ## Where it started
 
-The first version solved one specific problem. We spread documents across Ray workers, but if you split the work by document, one worker ends up with a 700-page book while the others sit idle. So rasterix flattens a bundle of PDFs into page-level jobs and lets Rust workers steal work from each other inside one process. In the version I first [wrote about](#/writing/rasterix-weekend-project), that path rendered 12,000 pages at 150 DPI in 5.28 ms per page.
+The first version solved one specific problem. We spread documents across Ray workers, but if you split the work by document, one worker ends up with a 700-page book while the others sit idle. So rasterix flattens a bundle of PDFs into page-level jobs and lets Rust workers steal work from each other inside one process.
+
+![Two timelines with four workers each. Split by document, worker 1 renders one long book while the others finish early and sit idle. Split by page, the book's pages are spread across all four workers and everyone finishes at about the same time.](../writing/media/fig-rasterix-long-tail.svg)
+
+In the version I first [wrote about](#/writing/rasterix-weekend-project), that path rendered 12,000 pages at 150 DPI in 5.28 ms per page.

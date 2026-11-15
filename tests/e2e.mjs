@@ -130,7 +130,7 @@ const contrast = (a, b) => {
       measure: Math.round(p.getBoundingClientRect().width / ch),
       color: cs.color, bg: getComputedStyle(document.body).backgroundColor,
       code: document.querySelectorAll('.code-block .hljs-keyword, .code-block .hljs-title, .code-block .hljs-built_in').length,
-      fig: (() => { const i = document.querySelector('.prose figure img'); return i ? i.naturalWidth : -1; })(),
+      fig: (() => { const f = document.querySelector('.prose figure svg, .prose figure img'); return f ? (f.naturalWidth ?? f.getBoundingClientRect().width) : -1; })(),
       cap: !!document.querySelector('.prose figcaption'),
       table: !!document.querySelector('.prose table'),
       title: document.activeElement?.id,
@@ -245,7 +245,7 @@ if (SINGLE) {
   check('single file (file://): world runs offline', !s.still && !s.worldFailed);
   await page.evaluate(() => (location.hash = '#/writing/building-a-nilometer'));
   await page.waitForTimeout(500);
-  check('single file: article route + embedded figure', await page.evaluate(() => document.body.classList.contains('reading') && document.querySelector('.prose figure img').naturalWidth > 0));
+  check('single file: article route + embedded figure', await page.evaluate(() => document.body.classList.contains('reading') && document.querySelector('.prose figure svg').getBoundingClientRect().width > 0));
   check('single file: no console errors', errors.length === 0, errors.join(' | '));
   await ctx.close();
 }

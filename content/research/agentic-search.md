@@ -16,6 +16,8 @@ Deep-search agents answer hard questions by searching many times and reasoning o
 
 So we tried keeping the documents in the program instead. Every search drops whole documents into a variable in a Python REPL, the model reads them by writing code, and only what that code prints ends up in its context. Because a document costs nothing until it’s printed, the agent can afford to search wide, and a cap on the number of searches, rather than the context window, decides how much it fetches.
 
+![Diagram comparing the usual approach, where every search result is pasted into the prompt until it is full, with ours, where whole documents live in a Python dictionary and only what the model's code prints reaches the prompt.](../writing/media/fig-documents-in-program.svg "A document costs nothing until the model prints part of it.")
+
 I wrote this in my spare time, together with colleagues from neuland.ai, TU Munich, TH Köln and the Data Science Group at Paderborn University.
 
 ## How it works
@@ -39,6 +41,8 @@ The ablations tell a simple story: searching wide is what finds the evidence, an
 ## On the leaderboard
 
 I also led neuland.ai’s entry on the public [BrowseComp-Plus leaderboard](https://huggingface.co/spaces/Tevatron/BrowseComp-Plus), built on a patched recursive-language-model REPL where the agent decides how wide each search goes. With GPT-5 and the Reason-ModernColBERT retriever it reached 87.1% with the **lowest calibration error on the leaderboard** (2.26%, of the 76 entries that report it) and the **fewest searches of any entry above 85% accuracy** (8.1 per question), as of November 2026.
+
+![Scatter chart of the eight BrowseComp-Plus entries above 85% accuracy, with searches per question on a log scale and calibration error. neuland.ai sits furthest bottom-left at 8.1 searches and 2.26% error. LightOn's entry with the same model and retriever sits at 13.3 searches and 6.07% error.](../writing/media/fig-browsecomp.svg "Every entry above 85% accuracy on the public leaderboard. The dashed line joins two entries with the same model and retriever.")
 
 LightOn’s entry makes a clean controlled comparison, because it uses the same model and the same retriever. It scores 87.6%, but needs 13.3 searches per question and has a calibration error of 6.1%. With model and retriever held fixed, our agent reaches the same accuracy with **39% fewer searches** and **2.7× lower calibration error**.
 

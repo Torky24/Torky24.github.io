@@ -106,10 +106,13 @@ export const linkList = (cls = 'links') => {
 };
 
 function home() {
-  const intro = shown(P.shortIntro) ? `<p class="hero-intro">${inline(P.shortIntro)}</p>` : '';
-  const routes = NAV.filter((n) => n.id !== 'home')
-    .map((n) => `<li><a class="route" href="#/${n.id}"><span class="r-n">${esc(n.n)}</span><span class="r-l">${esc(n.label)}</span><span class="r-p">${esc((C as any)[n.id].place)}</span><span class="r-a" aria-hidden="true">→</span></a></li>`)
-    .join('');
+  const recent = P.recent.filter((r) => shown(r.text));
+  const item = (r: (typeof recent)[number]) => {
+    const body = `<span class="nw-v">${esc(r.value)}</span><span class="nw-b"><span class="nw-l">${esc(r.label)}</span><span class="nw-t">${inline(r.text)}</span></span>`;
+    const ext = r.url && /^https?:/.test(r.url);
+    return `<li>${r.url ? `<a class="nw" href="${esc(r.url)}"${ext ? ' target="_blank" rel="noopener noreferrer"' : ''}>${body}<span class="nw-a" aria-hidden="true">→</span></a>` : `<div class="nw">${body}</div>`}</li>`;
+  };
+  const news = recent.length ? `<h2 class="nw-h">Recent</h2><ul class="news">${recent.map(item).join('')}</ul>` : '';
   return `<section id="home" class="ch ch-home" aria-labelledby="home-title" data-chapter="home">
     ${plate('home', 'Pixel illustration: two pylon towers silhouetted against a giant setting sun')}
     <div class="hero">
@@ -119,8 +122,7 @@ function home() {
       </div>
       <div class="hero-side">
         ${shown(P.tagline) ? `<p class="hero-tagline">${inline(P.tagline)}</p>` : ''}
-        ${intro}
-        <ul class="routes">${routes}</ul>
+        ${news}
       </div>
     </div>
     <p class="scroll-cue" aria-hidden="true"><span>Scroll to descend</span><span class="sc-bar"></span></p>

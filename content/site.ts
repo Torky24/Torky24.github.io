@@ -83,6 +83,37 @@ export const site: SiteConfig = {
       { title: 'Industrial PhD', org: 'Paderborn University', place: 'Paderborn', end: 'on hold' },
       { title: 'Master’s degree, Artificial Intelligence', org: 'Bauhaus-Universität Weimar', place: 'Weimar', start: '2021', end: '2024' },
     ],
+    recent: [
+      {
+        value: 'SoTA',
+        label: 'Terminal-Bench 2.0 & 2.1',
+        text: 'My agent beats Codex and Claude Code in our internal runs with about 3× fewer tokens, and Databricks Genie on OfficeQA Pro V2.',
+        url: '#/writing/agent-platform',
+      },
+      {
+        value: '€1.5M',
+        label: 'Revenue',
+        text: 'Project work I did brought in around €1.5M for neuland.ai.',
+      },
+      {
+        value: '#1',
+        label: 'BrowseComp-Plus',
+        text: 'Lowest calibration error of 76 entries, and the fewest searches of any entry above 85%.',
+        url: '#/research/agentic-search',
+      },
+      {
+        value: '61%',
+        label: 'rasterix on olmOCR-bench',
+        text: 'My weekend Rust project, now the top open-source text extractor of the six I compared.',
+        url: '#/research/rasterix',
+      },
+      {
+        value: 'Live',
+        label: 'Always-on agents',
+        text: 'I built and shipped agents that keep working in the background. Swarms are next.',
+        url: '#/writing/agent-platform',
+      },
+    ],
     talks: [
       {
         title: 'Multi-Agent Industry Model: live demo of a multi-agent document-processing system',
