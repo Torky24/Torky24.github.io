@@ -240,14 +240,14 @@ make('fig-browsecomp', 720, 440, (a) => {
 
 /* ── 5. Permission check ─────────────────────────────────────── */
 make('fig-permission-check', 720, 330, (a) => {
-  kicker(a, 'Every tool call is checked twice');
+  kicker(a, 'Agent Identity: every tool call is checked twice');
   a.box(24, 70, 150, 78, 'Agent wants', ['to call a tool'], { size: 16 });
   const diamond = (cx, cy, l1, l2) => {
     a.raw(`<path d="M${cx} ${cy - 50} L${cx + 82} ${cy} L${cx} ${cy + 50} L${cx - 82} ${cy} Z" fill="${C.deep}" stroke="${C.ochre}" stroke-width="2"/>`);
     a.lines(cx, cy - 4, [l1, l2], { size: 13, anchor: 'middle', cls: 's', weight: 600, lh: 17 });
   };
-  diamond(290, 109, 'Is there a grant', 'that covers it?');
-  diamond(506, 109, 'Is the person', 'still allowed?');
+  diamond(290, 109, 'Does the agent', 'have a grant?');
+  diamond(506, 109, 'Is the granter', 'still allowed?');
   a.arrow([[174, 109], [204, 109]]);
   a.arrow([[372, 109], [420, 109]], { stroke: C.mal });
   a.t(396, 100, 'yes', { size: 12, fill: C.mal, anchor: 'middle' });
@@ -258,14 +258,14 @@ make('fig-permission-check', 720, 330, (a) => {
   a.arrow([[290, 159], [290, 214]], { stroke: C.ochre });
   a.t(300, 192, 'no', { size: 12, fill: C.ochre });
   a.rect(178, 218, 224, 92, { fill: C.umber, stroke: C.ochre, sw: 2 });
-  a.t(192, 244, 'Ask the person', { cls: 's', size: 16, weight: 700 });
+  a.t(192, 244, 'Ask a person', { cls: 's', size: 16, weight: 700 });
   a.lines(192, 266, ['allow once, always, or no.', 'A one-time yes is handed', 'back if the call never ran.'], { size: 13, fill: C.lime2, lh: 17, cls: 's' });
   a.arrow([[506, 159], [506, 214]], { stroke: C.red });
   a.t(516, 192, 'no', { size: 12, fill: C.red });
   a.rect(430, 218, 152, 92, { fill: C.ink, stroke: C.red, sw: 2 });
   a.t(444, 244, 'Refuse', { cls: 's', size: 16, weight: 700 });
   a.lines(444, 266, ['Fails closed,', 'and keeps a record.'], { size: 13, fill: C.lime2, lh: 17, cls: 's' });
-  a.lines(612, 178, ['Agents never', 'hold credentials.', 'They can never', 'do more than', 'the person they', 'work for.'], { size: 12, fill: C.lime2, cls: 's', lh: 17 });
+  a.lines(612, 178, ['Each agent has', 'its own identity', 'and never holds', 'credentials.'], { size: 12, fill: C.lime2, cls: 's', lh: 17 });
 });
 
 /* ── 6. Storage first ────────────────────────────────────────── */

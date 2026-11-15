@@ -86,11 +86,11 @@ These days I design around object storage rather than compute. Durable state goe
 
 The industry calls this separating storage and compute, and its newer, stricter form is zero-disk or diskless architecture. [WarpStream](https://www.warpstream.com/blog/kafka-is-dead-long-live-kafka) runs Kafka-compatible streaming on stateless agents over S3, and [ClickHouse Cloud](https://clickhouse.com/blog/clickhouse-cloud-stateless-compute) made its compute fully stateless in 2025. It suits agents especially well, because an agent’s state is already a log you can rebuild from.
 
-## Letting agents act for people, safely
+## Agent Identity: letting agents act safely
 
-![Flowchart: when an agent wants to call a tool, the platform checks whether a grant covers it and whether the person is still allowed. If both pass, the call runs and is recorded. With no grant, the person is asked to allow once, always, or not at all. If the person is no longer allowed, the call is refused.](./media/fig-permission-check.svg "One place makes the decision, fails closed and keeps a record.")
+![Flowchart: when an agent wants to call a tool, the platform checks whether the agent has a grant that covers it and whether the person who granted it is still allowed. If both pass, the call runs and is recorded. With no grant, a person is asked to allow once, always, or not at all. If the granter is no longer allowed, the call is refused.](./media/fig-permission-check.svg "One place makes the decision, fails closed and keeps a record.")
 
-An agent should never be able to do more than the person it’s working for. So every tool call is checked twice: is there a grant that covers it, and does that person still have the right to do it themselves? Agents never hold credentials; the product asks the identity service on each call.
+I introduced Agent Identity: every agent has its own identity and acts only with the grants it’s been given. Every tool call is checked twice: does the agent have a grant that covers it, and does the person who granted it still have that right themselves? Agents never hold credentials; the product asks the identity service on each call.
 
 In shared workspaces, each person lends the agent their own tools and data, every grant remembers who gave it, and each call stays within that person’s rights. When someone leaves, their agents, grants and tokens go with them. I moved the platform to this model in a long series of small, carefully tested steps that ended in a migration we could reverse.
 

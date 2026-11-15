@@ -28,7 +28,7 @@ export const site: SiteConfig = {
     shortIntro:
       'Hi, I’m Islam. I build the platform our AI agents run on at neuland.ai, and I live in Bonn. A lot of my favourite work started as something I just couldn’t leave alone: my agentic-search paper and rasterix both began on evenings and weekends.',
     bio: [
-      'Day to day, I’m one of the main engineers on neuland.ai’s [agent platform](#/writing/agent-platform), and I designed its system architecture. I spend most of my time on what sits underneath it: the loop that runs each agent turn, the durable streams everything is rebuilt from, how agents get permission to act for people, and the sandboxes they run code in. I also design how people work with the agent in the app, and set up our tracing and observability. I like hearing from the people who use what we build; a product built from a narrow view ends up having to be pushed on people. I built and introduced our always-on agents, I’m now starting on agent swarms, and the agent harness I built beats Codex and Claude Code on Terminal-Bench in our internal runs. I’m also part of the [research team](https://neuland.ai/en/company/research).',
+      'Day to day, I’m one of the main engineers on neuland.ai’s [agent platform](#/writing/agent-platform), and I designed its system architecture. I spend most of my time on what sits underneath it: the loop that runs each agent turn, the durable streams everything is rebuilt from, Agent Identity, which lets agents act safely with their own grants, and the sandboxes they run code in. I also design how people work with the agent in the app, and set up our tracing and observability. I like hearing from the people who use what we build; a product built from a narrow view ends up having to be pushed on people. I built and introduced our always-on agents, I’m now starting on agent swarms, and the agent harness I built beats Codex and Claude Code on Terminal-Bench in our internal runs. I’m also part of the [research team](https://neuland.ai/en/company/research).',
       'Outside of that, I wrote a [paper on deep-search agents](#/research/agentic-search) in my spare time, trained small language models with SFT and RL to get better at agentic search, and started [rasterix](#/research/rasterix) over a weekend. It began as a fast PDF rasterizer in Rust and has grown into a document engine that turns PDFs and office files into Markdown, and it comes first of six open-source extractors on olmOCR-bench. I also led neuland.ai’s entry on the [BrowseComp-Plus leaderboard](https://huggingface.co/spaces/Tevatron/BrowseComp-Plus): it has the lowest calibration error of any entry, and the fewest searches of any entry above 85% accuracy.',
       'Before neuland.ai I worked in data engineering at Mercedes-Benz Mobility and computer vision at Fraunhofer IOF, and did my master’s in AI at Bauhaus-Universität Weimar.',
     ],
@@ -43,7 +43,7 @@ export const site: SiteConfig = {
       'Object-storage-first design',
       'Always-on agents',
       'Agent swarms',
-      'Agent authorization',
+      'Agent identity',
       'Sandboxed code execution',
       'Context engineering',
       'Model access & usage',
@@ -66,7 +66,7 @@ export const site: SiteConfig = {
         start: 'Dec 2023',
         end: 'present',
         detail:
-          'I joined as an AI Engineer in December 2023 and I’m now Lead AI Engineer. Most of my work is on our agent platform: the agent runtime, its durable streams, how agents get permissions, the sandboxes, always-on agents, tool discovery, how we talk to models, tracing on SigNoz, and how people work with all of it in the app. I also worked on OCR and data pipelines on Ray, built rasterix, and built the agent harness behind our benchmark results.',
+          'I joined as an AI Engineer in December 2023 and I’m now Lead AI Engineer. Most of my work is on our agent platform: the agent runtime, its durable streams, Agent Identity and permissions, the sandboxes, always-on agents, tool discovery, how we talk to models, tracing on SigNoz, and how people work with all of it in the app. I also worked on OCR and data pipelines on Ray, built rasterix, and built the agent harness behind our benchmark results.',
       },
       {
         title: 'Computer Vision Engineer',
