@@ -99,7 +99,7 @@ export const site: SiteConfig = {
         value: '#1',
         label: 'BrowseComp-Plus',
         text: 'Lowest calibration error of 76 entries, and the fewest searches of any entry above 85%.',
-        url: '#/research/agentic-search',
+        url: '#/writing/browsecomp-plus',
       },
       {
         value: '61%',

@@ -146,7 +146,7 @@ const contrast = (a, b) => {
   check('article → "All writing" returns to the Writing chapter', (await page.evaluate(() => window.__site.state())).current === 'writing');
   const marker = /\b(prototype|sample|provisional|placeholder|draft|reserved|lorem)\b|\[[^\]]+\]|—/i;
   const leaks = [];
-  for (const route of ['', '#/writing/building-a-nilometer', '#/writing/agent-platform', '#/writing/rasterix-weekend-project', '#/research/agent-platform', '#/research/agentic-search', '#/research/rasterix', '#/research/webis-imagearg-2023', '#/research/blast-performance-2019']) {
+  for (const route of ['', '#/writing/building-a-nilometer', '#/writing/agent-platform', '#/writing/rasterix-weekend-project', '#/writing/browsecomp-plus', '#/research/agent-platform', '#/research/agentic-search', '#/research/rasterix', '#/research/webis-imagearg-2023', '#/research/blast-performance-2019']) {
     await page.goto(BASE + '?fixed' + route, { waitUntil: 'load' });
     await page.waitForTimeout(500);
     const hit = await page.evaluate((src) => {

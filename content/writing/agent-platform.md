@@ -14,7 +14,6 @@ Here’s the short version before the tour:
 ```stats
 SoTA | on Terminal-Bench 2.0 and 2.1 in our internal runs, ahead of Codex and Claude Code
 3× | fewer tokens than Codex
-#1 | lowest calibration error of 76 entries on BrowseComp-Plus
 ```
 
 ## The whole thing on one page
@@ -33,16 +32,7 @@ The one idea that holds it all together: **the stream is the truth**. Nothing im
 
 I built the agent harness behind these results. In our internal runs it reaches state-of-the-art results on Terminal-Bench 2.0 and 2.1, ahead of Codex and Claude Code, while using about three times fewer tokens than Codex. On Databricks’ OfficeQA Pro V2, where agents reason across two centuries of U.S. federal financial records, it beats Databricks Genie.
 
-I also led our entry on the public [BrowseComp-Plus leaderboard](https://huggingface.co/spaces/Tevatron/BrowseComp-Plus). For a search agent you want to trust, two things matter a lot: how well its confidence matches how often it’s actually right (calibration error), and how many searches it needs. This chart shows every entry above 85% accuracy:
-
-![Scatter chart of the eight BrowseComp-Plus entries above 85% accuracy, with searches per question on a log scale and calibration error. neuland.ai sits furthest bottom-left at 8.1 searches and 2.26% error. LightOn's entry with the same model and retriever sits at 13.3 searches and 6.07% error.](./media/fig-browsecomp.svg "Data from the public BrowseComp-Plus leaderboard, November 2026. The dashed line joins two entries that use the same model and the same retriever.")
-
-Ours sits alone in the bottom-left corner: the lowest calibration error of all 76 scored entries, and the fewest searches of any entry above 85%. The fairest comparison is LightOn’s entry, because it uses the same model and the same retriever, so the agent is the only thing that differs:
-
-```stats
-39% | fewer searches at the same accuracy
-2.7× | lower calibration error
-```
+Search agents are their own story, so I wrote about our BrowseComp-Plus entry [in a separate post](#/writing/browsecomp-plus).
 
 ## One loop for every turn
 
@@ -70,6 +60,7 @@ All of this runs on a handful of ordinary 8- and 16-core VMs. Workspaces live in
 A big part of my work was load testing to fit as many people as possible onto those machines. Instead of guessing, we measured what a hosted workspace really costs in memory, what an active turn costs in CPU, and where live updates start to slow down. The measurements changed the design:
 
 ```stats
+~80 | concurrent agent turns on one 8-vCPU machine, at about a third of its CPU
 12× | less memory set aside per host, once sized from real usage
 15× | less slot time per turn: a turn hands its slot back while the model thinks
 29× | CPU overcommit hiding in the scheduler, caught and fixed
@@ -126,5 +117,3 @@ I built and introduced always-on agents: agents that keep working in the backgro
 ## Everything else
 
 I also worked on OCR and the data pipelines around it, running on Ray; that’s where [rasterix](#/writing/rasterix-weekend-project) came from. And a lot of this autumn went into rebuilding the server in small, reviewed pull requests with a few simple rules: a move changes nothing, a bug fix comes with a test that fails without it, and imports only point one way. I use AI coding agents every day, and I still read and own every change that ships.
-
-Built with Python (asyncio, FastAPI, Ray), TypeScript and React, Postgres, Redis, SigNoz, and Kubernetes on Azure with Terraform.
